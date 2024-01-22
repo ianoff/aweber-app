@@ -1,6 +1,6 @@
 import { deepMerge } from "./utils";
 
-interface ValidationObject {
+export interface ValidationObject {
   valid: boolean | undefined;
   messages: string[];
 }
