@@ -14,14 +14,19 @@ test("Return undefined if nothing has been entered yet", () => {
     valid: undefined,
     messages: [],
   });
+
+  expect(isPasswordValid("      ")).toEqual({
+    valid: undefined,
+    messages: [],
+  });
 });
 
 test("Validates valid password", () => {
-    expect(isPasswordValid("aD56#_sb")).toEqual({
-      valid: true,
-      messages: [],
-    });
+  expect(isPasswordValid("aD56#_sb")).toEqual({
+    valid: true,
+    messages: [],
   });
+});
 
 test("Password has a min length of 6 characters", () => {
   expect(isPasswordValid("aB$6")).toEqual({
@@ -83,4 +88,42 @@ test("Can show multiple errors at once", () => {
       `Password must have at least one special character (e.g. !@#$%^&*()_-+={[}]|:;"'<,>.])`
     )
   ).toBe(true);
+});
+
+test("Can be instantiated with custom messages", () => {
+  const custom = new PasswordValidator({
+    length: {
+      message: "Not long enough",
+    },
+    number: {
+      message: "Needs a number",
+    },
+  });
+
+  expect(custom.validate("XDaR@").valid).toEqual(false);
+  expect(custom.validate("XDaR@").messages.length).toEqual(2);
+  expect(custom.validate("XDaR@").messages.includes("Not long enough"));
+  expect(custom.validate("XDaR@").messages.includes("Needs a number"));
+});
+
+test("Can be instantiated with custom functions", () => {
+  const customFunc = new PasswordValidator({
+    noThreeRepeat: {
+      message: "No character can be repeated 3 times in a row",
+      validator: (str) => {
+        return !/(?=(.)\1\1).{3,}/.test(str)
+      }
+    }});
+ 
+
+  expect(customFunc.validate("aaaaaaaaaD56#_sb")).toEqual({
+    valid: false,
+    messages: ["No character can be repeated 3 times in a row"]
+  });
+
+  expect(customFunc.validate("aD56#_sb")).toEqual({
+    valid: true,
+    messages: []
+  });
+
 });
