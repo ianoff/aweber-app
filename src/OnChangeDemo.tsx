@@ -1,13 +1,13 @@
 import PasswordInput from "./components/PasswordInput";
 import useValidation from "./lib/useValidation";
 
-const OnChange = () => {
+const OnChangeDemo = () => {
   const { validation, onChange, formData } = useValidation({
     password1: "",
     password2: "",
   });
 
-  const onSubmit = (e) => {
+  const onSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //.. sending data to the server goes here!
   }
@@ -98,4 +98,4 @@ const OnChange = () => {
   );
 };
 
-export default OnChange;
+export default OnChangeDemo;

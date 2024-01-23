@@ -2,25 +2,23 @@ import { useState, useId } from "react";
 
 interface PasswordInputProps {
   ariaDescribedBy: string;
-  debounceWait: number;
-  displayHideToggle: boolean;
-  hideTogglebuttonClassName: string;
+  displayHideToggle?: boolean;
+  hideTogglebuttonClassName?: string;
   id: string;
   inputClassName?: string;
   labelClassName?: string;
-  labelText: string;
+  labelText?: string;
   name: string;
-  onChange: (e: React.FormEvent<HTMLInputElement>, ...args) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>, ...args:unknown[]) => void;
   placeholder?: string;
-  required: boolean;
-  value: string;
-  pristine: boolean;
+  required?: boolean;
+  value?: string;
 }
 
 /**
  * Password input component.
  *
- * @param {PasswordInputProps} props
+ * @param {PasswordInputProps} props 
  * @return {*}
  */
 const PasswordInput = (props: PasswordInputProps) => {

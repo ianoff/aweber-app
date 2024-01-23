@@ -10,7 +10,7 @@ export interface FieldsWithValues {
 }
 
 export class TooManyFieldsError extends Error {
-  constructor(message) {
+  constructor(message:string) {
     super(message);
     this.name = "TooManyFieldsError";
   }
@@ -19,6 +19,7 @@ export class TooManyFieldsError extends Error {
 interface UseValidationReturn {
   validation: ValidationObject;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   formData: FieldsWithValues;
 }
 
@@ -53,11 +54,12 @@ function useValidation(
 
   const pv = new PasswordValidator(validationOptions);
 
-  const runValidation = (form) => {
+  const runValidation = (form:HTMLFormElement) => {
     const newFormData = { ...formData };
 
     Object.entries(fields).forEach(([name]) => {
-      newFormData[name] = form.querySelector(`input[name=${name}]`).value;
+      const input: HTMLInputElement | null = form.querySelector(`input[name=${name}]`);
+        newFormData[name] = input ? input.value : newFormData[name];
     });
 
     setFormData(newFormData);
@@ -83,9 +85,9 @@ function useValidation(
   };
 
   // On Form Element
-  const onSubmit = (e: React.ChangeEvent<HTMLFormElement>): void => {
-    const form = e.target;
-    runValidation(form);
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    const form  = e.target;
+    runValidation(form as HTMLFormElement);
   };
 
   const validationReturn: UseValidationReturn = {

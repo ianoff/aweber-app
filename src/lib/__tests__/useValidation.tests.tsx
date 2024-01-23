@@ -1,8 +1,7 @@
-import React from "react";
 import { render, renderHook, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import useValidation, { TooManyFieldsError, MissingFormError } from "../useValidation";
+import useValidation, { TooManyFieldsError } from "../useValidation";
 
 describe("useValidation", () => {
   test("returns correct object", () => {
