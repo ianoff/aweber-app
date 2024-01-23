@@ -5,10 +5,13 @@ const config: Config = {
   collectCoverage: true,
   coverageDirectory: "coverage",
   coveragePathIgnorePatterns: ["/node_modules/"],
-  coverageProvider: "v8",
+  coverageProvider: "babel",
   moduleFileExtensions: ["js", "mjs", "cjs", "jsx", "ts", "tsx", "json", "node"],
   rootDir: "./",
-  testEnvironment: "jsdom"
+  testEnvironment: "jsdom",
+  transform: {
+    "\\.[jt]sx?$": "babel-jest",
+  },
 };
 
 export default config;

@@ -8,58 +8,68 @@ import { PasswordValidator } from "../lib";
 
 const pv = new PasswordValidator();
 const isPasswordValid = pv.validate;
-const doStringsMatch = pv.match;
 
 describe("validation", function () {
-  test("Return false if nothing has been entered yet", () => {
-    expect(isPasswordValid("")).toEqual({
-      valid: false,
-      messages: [],
-    });
-
-    expect(isPasswordValid("      ")).toEqual({
-      valid: false,
-      messages: [],
-    });
-  });
-
-  test("Validates valid password", () => {
-    expect(isPasswordValid("aD56#_sb")).toEqual({
+  test("Validates valid passwords", () => {
+    expect(isPasswordValid("aD56#_sb", "aD56#_sb")).toEqual({
       valid: true,
       messages: [],
     });
   });
 
+  test("Return false if nothing has been entered yet, but don't bombard the user with errors", () => {
+    expect(isPasswordValid()).toEqual({
+      valid: false,
+      messages: [],
+    });
+    expect(isPasswordValid("", "")).toEqual({
+      valid: false,
+      messages: [],
+    });
+
+    expect(isPasswordValid("      ", "")).toEqual({
+      valid: false,
+      messages: [],
+    });
+  });
+
+  test("Passwords must match", () => {
+    expect(isPasswordValid("aB$6878")).toEqual({
+      valid: false,
+      messages: ["Passwords must match exactly"],
+    });
+  });
+
   test("Password has a min length of 6 characters", () => {
-    expect(isPasswordValid("aB$6")).toEqual({
+    expect(isPasswordValid("aB$6", "aB$6")).toEqual({
       valid: false,
       messages: ["Password must be at least 6 characters in length"],
     });
   });
 
   test("Password has at least 1 uppercase character", () => {
-    expect(isPasswordValid("a6%daad")).toEqual({
+    expect(isPasswordValid("a6%daad", "a6%daad")).toEqual({
       valid: false,
       messages: ["Password must have at least one uppercase character"],
     });
   });
 
   test("Password has at least 1 lowercase character", () => {
-    expect(isPasswordValid("A6%DACD")).toEqual({
+    expect(isPasswordValid("A6%DACD", "A6%DACD")).toEqual({
       valid: false,
       messages: ["Password must have at least one lowercase character"],
     });
   });
 
   test("Password has at least 1 number", () => {
-    expect(isPasswordValid("A%DaCD")).toEqual({
+    expect(isPasswordValid("A%DaCD", "A%DaCD")).toEqual({
       valid: false,
       messages: ["Password must have at least one number"],
     });
   });
 
   test("Password has at least 1 special character", () => {
-    expect(isPasswordValid("A7DaCD")).toEqual({
+    expect(isPasswordValid("A7DaCD", "A7DaCD")).toEqual({
       valid: false,
       messages: [
         `Password must have at least one special character (e.g. !@#$%^&*()_-+={[}]|:;"'<,>.])`,
@@ -69,10 +79,15 @@ describe("validation", function () {
 
   test("Can show multiple errors at once", () => {
     expect(isPasswordValid("aaa").valid).toEqual(false);
-    expect(isPasswordValid("aaa").messages.length).toEqual(4);
+    expect(isPasswordValid("aaa").messages.length).toEqual(5);
     expect(
       isPasswordValid("aaa").messages.includes(
         "Password must be at least 6 characters in length"
+      )
+    ).toBe(true);
+    expect(
+      isPasswordValid("aaa").messages.includes(
+        "Passwords must match exactly"
       )
     ).toBe(true);
     expect(
@@ -92,71 +107,46 @@ describe("validation", function () {
 
   test("Can be instantiated with custom messages", () => {
     const custom = new PasswordValidator({
-      validationOptions: {
-        minimumLength: {
-          message: "Not long enough",
-        },
-        number: {
-          message: "Needs a number",
-        },
+      minimumLength: {
+        message: "Not long enough",
+      },
+      number: {
+        message: "Needs a number",
       },
     });
 
-    expect(custom.validate("XDaR@").valid).toEqual(false);
-    expect(custom.validate("XDaR@").messages.length).toEqual(2);
-    expect(custom.validate("XDaR@").messages.includes("Not long enough"));
-    expect(custom.validate("XDaR@").messages.includes("Needs a number"));
+    expect(custom.validate("XDaR@", "XDaR@").valid).toEqual(false);
+    expect(custom.validate("XDaR@", "XDaR@").messages.length).toEqual(2);
+    expect(custom.validate("XDaR@", "XDaR@").messages.includes("Not long enough"));
+    expect(custom.validate("XDaR@", "XDaR@").messages.includes("Needs a number"));
   });
 
   test("Can be instantiated with custom functions", () => {
     const customFunc = new PasswordValidator({
-      validationOptions: {
-        noThreeRepeat: {
-          message: "No character can be repeated 3 times in a row",
-          validator: (str) => {
-            return !/(?=(.)\1\1).{3,}/.test(str);
-          },
+      noThreeRepeat: {
+        message: "No character can be repeated 3 times in a row",
+        validator: (str) => {
+          return !/(?=(.)\1\1).{3,}/.test(str);
         },
-        minimumLength: {
-          validator: (str, minLength = 8) => {
-            return str.length >= minLength;
-          },
+      },
+      minimumLength: {
+        validator: (str) => {
+          return str.length >= 8;
         },
       },
     });
 
-    expect(customFunc.validate("aaaaaaaaaD56#_sb")).toEqual({
+    expect(customFunc.validate("aaaaaaaaaD56#_sb", "aaaaaaaaaD56#_sb")).toEqual({
       valid: false,
       messages: ["No character can be repeated 3 times in a row"],
     });
 
-    expect(customFunc.validate("aA%6")).toEqual({
+    expect(customFunc.validate("aA%6", "aA%6")).toEqual({
       valid: false,
       messages: ["Password must be at least 6 characters in length"],
     });
 
-    expect(customFunc.validate("aD56#_sb")).toEqual({
-      valid: true,
-      messages: [],
-    });
-  });
-});
-
-describe("matching", function () {
-  test("indicate if password strings match", () => {
-    expect(doStringsMatch("abc", "def")).toEqual({
-      valid: false,
-      messages: ["Passwords must match exactly"],
-    });
-    expect(doStringsMatch("aaa", "aaa")).toEqual({
-      valid: true,
-      messages: [],
-    });
-    expect(doStringsMatch("aaa  ", "  aaa")).toEqual({
-      valid: true,
-      messages: [],
-    });
-    expect(doStringsMatch("aaa  ", "  aaa")).toEqual({
+    expect(customFunc.validate("aD56#_sb", "aD56#_sb")).toEqual({
       valid: true,
       messages: [],
     });

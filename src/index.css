@@ -3,14 +3,23 @@
 @tailwind utilities;
 
 body {
-  @apply bg-slate-50 mx-8;
+  @apply bg-slate-50 text-nearblack;
 }
 
 @layer base {
+  h1, h2, h3, h4, h5, h6, label, button {
+    @apply font-display;
+  }
+  h1, h2 {
+    @apply font-bold;
+  }
+  h3, h4, h5 {
+    @apply italic
+  }
   h1 {
-    @apply text-5xl mt-6 mb-12;
+    @apply text-5xl mt-8 mb-6;
   }
   h2 {
-    @apply text-xl mt-6 mb-12;
+    @apply text-3xl mt-8 mb-6;
   }
-}
+} 

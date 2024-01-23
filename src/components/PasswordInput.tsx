@@ -1,8 +1,4 @@
 import { useState, useId } from "react";
-// import { debounce } from "../utils";
-
-
-
 
 interface PasswordInputProps {
   ariaDescribedBy: string;
@@ -23,7 +19,7 @@ interface PasswordInputProps {
 
 
 /**
- *
+ * Password input component.
  *
  * @param {PasswordInputProps} props
  * @return {*} 
@@ -33,7 +29,6 @@ const PasswordInput = (props: PasswordInputProps) => {
   const showPWButtonId = useId()
   const {
     ariaDescribedBy,
-    // debounceWait = 100,
     displayHideToggle = true,
     hideTogglebuttonClassName,
     id,
@@ -60,9 +55,7 @@ const PasswordInput = (props: PasswordInputProps) => {
           className={inputClassName}
           id={id}
           name={name}
-          onChange={(e) => {
-            onChange(e);
-          }}
+          onChange={onChange}
           placeholder={placeholder}
           required={required}
           type={displayHideToggle ? (show ? "text" : "password") : "password"}
