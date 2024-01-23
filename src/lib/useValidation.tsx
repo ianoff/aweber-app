@@ -53,14 +53,7 @@ function useValidation(
 
   const pv = new PasswordValidator(validationOptions);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const form = e.target.form;
-    if (!form) {
-      console.error(
-        "The element using the onChange function should be within a form element; parent form not found."
-      );
-      return;
-    }
+  const runValidation = (form) => {
     const newFormData = { ...formData };
 
     Object.entries(fields).forEach(([name]) => {
@@ -77,10 +70,28 @@ function useValidation(
       messages,
     });
   };
+  // On inputs
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const form = e.target.form;
+    if (!form) {
+      console.error(
+        "The element using the onChange function should be within a form element; parent form not found."
+      );
+      return;
+    }
+    runValidation(form);
+  };
+
+  // On Form Element
+  const onSubmit = (e: React.ChangeEvent<HTMLFormElement>): void => {
+    const form = e.target;
+    runValidation(form);
+  };
 
   const validationReturn: UseValidationReturn = {
     validation,
     onChange,
+    onSubmit,
     formData,
   };
 

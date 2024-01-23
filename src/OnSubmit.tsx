@@ -1,8 +1,8 @@
 import PasswordInput from "./components/PasswordInput";
 import useValidation from "./lib/useValidation";
 
-const DefaultForm = () => {
-  const { validation, onChange, formData } = useValidation({
+const OnSubmit = () => {
+  const { validation, onSubmit } = useValidation({
     password1: "",
     password2: "",
   });
@@ -19,9 +19,14 @@ const DefaultForm = () => {
 
   return (
     <>
-      <h2>Default library settings demo</h2>
-      <h3>Featuring styles with TailwindCSS</h3>
+      <h2>OnSubmit (Uncontrolled components) demo</h2>
       <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit(e);
+
+          // ... sending data to the server goes here!
+        }}
         id="form"
         className="bg-white shadow-md rounded px-4 pt-6 pb-8 mb-4 md:flex md:flex-row"
       >
@@ -48,8 +53,6 @@ const DefaultForm = () => {
               ariaDescribedBy="password-errors"
               id="password1"
               labelClassName="block text-gray-700 text-sm font-bold mb-2"
-              onChange={onChange}
-              value={formData.password1}
               name="password1"
             />
           </div>
@@ -60,8 +63,6 @@ const DefaultForm = () => {
               id="password2"
               labelClassName="block text-gray-700 text-sm font-bold mb-2"
               labelText="Confirm password"
-              onChange={onChange}
-              value={formData.password2}
               name="password2"
             />
           </div>
@@ -93,4 +94,4 @@ const DefaultForm = () => {
   );
 };
 
-export default DefaultForm;
+export default OnSubmit;

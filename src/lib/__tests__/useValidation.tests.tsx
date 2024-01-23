@@ -12,6 +12,7 @@ describe("useValidation", () => {
         valid: false,
         messages: [],
       },
+      onSubmit: expect.any(Function),
       onChange: expect.any(Function),
       formData: { fieldOne: "", fieldTwo: "" },
     });
@@ -57,7 +58,49 @@ describe("useValidation", () => {
     );
   });
 
-  test("throws correct error when two many fields are indicated on instantiation", async () => {
+  test("fires onSubmit correctly", async () => {
+    const FakeForm = () => {
+      const { onSubmit, validation } = useValidation({
+        fieldOne: "",
+        fieldTwo: "",
+      });
+
+      return (
+        <form
+          data-testid="my-form"
+          id="myForm"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(e);
+          }}
+        >
+          <label htmlFor="fieldOne">FieldOne</label>
+          <input name="fieldOne" id="fieldOne"></input>
+          <label htmlFor="fieldTwo">FieldTwo</label>
+          <input name="fieldTwo" id="fieldTwo"></input>
+          <div data-testid="is-valid">{validation.valid ? "valid" : "not valid"}</div>
+          <div data-testid="messages">{validation.messages.join(", ")}</div>
+          <button type="submit">submit</button>
+        </form>
+      );
+    };
+    render(<FakeForm />);
+
+    await fireEvent.change(screen.getByLabelText(/FieldOne/i), {
+      target: { value: "a" },
+    });
+
+    await fireEvent.click(screen.getByText(/submit/));
+
+    // await screen.debug();
+
+    expect(screen.getByTestId("is-valid")).toHaveTextContent("not valid");
+    expect(screen.getByTestId("messages")).toHaveTextContent(
+      `Password must be at least 6 characters in length, Password must have at least one special character (e.g. !@#$%^&*()_-+={[}]|:;"'<,>.]), Password must have at least one uppercase character, Password must have at least one number, Passwords must match exactly`
+    );
+  });
+
+  test("throws correct error when two many fields are provided on instantiation", async () => {
     const FakeFormBad = () => {
       const { onChange, formData, validation } = useValidation({
         fieldOne: "",
@@ -135,7 +178,9 @@ describe("useValidation", () => {
       target: { value: "a" },
     });
 
-    expect(console.error).toHaveBeenCalledWith("The element using the onChange function should be within a form element; parent form not found.")
+    expect(console.error).toHaveBeenCalledWith(
+      "The element using the onChange function should be within a form element; parent form not found."
+    );
 
     console.error = oldError;
   });

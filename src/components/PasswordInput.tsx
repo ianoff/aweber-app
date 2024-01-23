@@ -14,19 +14,18 @@ interface PasswordInputProps {
   placeholder?: string;
   required: boolean;
   value: string;
-  pristine: boolean
+  pristine: boolean;
 }
-
 
 /**
  * Password input component.
  *
  * @param {PasswordInputProps} props
- * @return {*} 
+ * @return {*}
  */
 const PasswordInput = (props: PasswordInputProps) => {
   const [show, setShow] = useState<boolean>(false);
-  const showPWButtonId = useId()
+  const showPWButtonId = useId();
   const {
     ariaDescribedBy,
     displayHideToggle = true,
@@ -39,9 +38,8 @@ const PasswordInput = (props: PasswordInputProps) => {
     onChange,
     placeholder,
     required,
-    value
+    value,
   } = props;
-
 
   return (
     <>
@@ -69,6 +67,16 @@ const PasswordInput = (props: PasswordInputProps) => {
             onClick={() => setShow(!show)}
             role="switch"
             type="button"
+            style={
+              hideTogglebuttonClassName
+                ? {}
+                : {
+                    position: "absolute",
+                    right: "1em",
+                    top: "0",
+                    height: "100%",
+                  }
+            }
           >
             {show ? "HIDE" : "SHOW"}
           </button>
