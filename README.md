@@ -107,9 +107,9 @@ For more extensive examples, [follow the above instructions](#example-site-insta
 
 The library I created has multiple pieces that can be used on their own, or in tandem.
 
-- `/src/lib.ts` - A well-tested library with sensible defaults and customizable options that can validate passwords (strings) directly. Written in TS, but can be compiled for use in any JS application.
+- `/src/lib/lib.ts` - A well-tested library with sensible defaults and customizable options that can validate passwords (strings) directly. Written in TS, but can be compiled for use in any JS application.
 
-- `/src/useValidation` - A custom hook that uses `lib.ts` under the hood and takes the same options. Provides an `onChange` and an `onSubmit` method so you can get up and running quickly, regardless of your use case and React framework.
+- `/src/lib/useValidation` - A custom hook that uses `lib.ts` under the hood and takes the same options. Provides an `onChange` and an `onSubmit` method so you can get up and running quickly, regardless of your use case and React framework.
 
 - `/src/components/PasswordInput.tsx` - a minimally styled (only uses positioning for the show/hide text toggle) input component that can be used alongside the hook for quick setup. CSS Library and React framework agnostic.
 
