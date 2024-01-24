@@ -105,7 +105,7 @@ For more extensive examples, [follow the above instructions](#example-site-insta
 
 ### Structure
 
-The library I created can be used in multiple ways:
+The library I created has multiple pieces that can be used on their own, or in tandem.
 
 - `/src/lib.ts` - A well-tested library with sensible defaults and customizable options that can validate passwords (strings) directly. Written in TS, but can be compiled for use in any JS application.
 
