@@ -23,7 +23,6 @@ Import the `useValidation` hook into your component. The hook can be used one of
 
 You may use the provided PasswordInput component in the `components` folder, or use your own.
 
-
 ### onSubmit Example
 
 For onSubmit, use the `onSubmit` handler from the hook on the `form` element.
@@ -49,6 +48,9 @@ const MyComponent = () => {
       <label htmlFor="fieldTwo">FieldTwo</label>
       <input name="fieldTwo" id="fieldTwo" />
       <button type="submit">submit</button>
+      {validation.messages.map((message) => {
+        return <p key={message}>{message}</p>;
+      })}
     </form>
   );
 };
@@ -61,7 +63,7 @@ For onChange, use the `onChange` handler from the hook on your `input` elements,
 ```jsx
 const MyComponent = () => {
   // Instantiate the hook with the field names and initial values
-  const { onSubmit, validation, formData } = useValidation({
+  const { onChange, validation, formData } = useValidation({
     fieldOne: "",
     fieldTwo: "",
   });
@@ -83,6 +85,9 @@ const MyComponent = () => {
         value={formData.fieldTwo}
       />
       <button type="submit">submit</button>
+      {validation.messages.map((message) => {
+        return <p key={message}>{message}</p>;
+      })}
     </form>
   );
 };
