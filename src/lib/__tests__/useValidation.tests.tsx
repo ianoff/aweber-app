@@ -138,7 +138,7 @@ describe("useValidation", () => {
     console.error = oldError;
   });
 
-  test("throws correct error when no form is provided", async () => {
+  test("Shows correct error when no form is provided", async () => {
     const FakeNoForm = () => {
       const { onChange, formData, validation } = useValidation({
         fieldOne: "",
@@ -177,6 +177,43 @@ describe("useValidation", () => {
 
     expect(console.error).toHaveBeenCalledWith(
       "The element using the onChange function should be within a form element; parent form not found."
+    );
+
+    console.error = oldError;
+  });
+
+  test("Shows correct error when the listed inputs are not there", async () => {
+    const FakeFormNoInput = () => {
+      const { onSubmit, validation } = useValidation({
+        fieldOne: "",
+        fieldTwo: "",
+      });
+
+      return (
+        <form
+          data-testid="my-form"
+          id="myForm"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(e);
+          }}
+        >
+          <div data-testid="is-valid">{validation.valid ? "valid" : "not valid"}</div>
+          <div data-testid="messages">{validation.messages.join(", ")}</div>
+          <button type="submit">submit</button>
+        </form>
+      );
+    };
+    const oldError = console.error;
+    console.error = jest.fn();
+    render(<FakeFormNoInput />);
+
+    await fireEvent.click(screen.getByText(/submit/));
+
+
+    
+    expect(console.error).toHaveBeenCalledWith(
+      "Input named fieldOne could not be found."
     );
 
     console.error = oldError;

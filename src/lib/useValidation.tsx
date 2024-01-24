@@ -59,8 +59,10 @@ function useValidation(
 
     Object.entries(fields).forEach(([name]) => {
       const input: HTMLInputElement | null = form.querySelector(`input[name=${name}]`);
-      if (input && input.value) {
-        newFormData[name] = input.value;
+      if (input) {
+          newFormData[name] = input.value;
+      } else {
+        console.error(`Input named ${name} could not be found.`)
       }
     });
 

@@ -2,7 +2,7 @@
 
 ## Example site installation
 
-Clone the repo locally.
+Clone the repo locally. Then run:
 
 ```bash
 npm i

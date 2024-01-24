@@ -85,7 +85,7 @@ export class PasswordValidator {
     this.settings = deepMerge(defaults, options as Settings);
   }
   /**
-   * Validate a single password based on instantiated settings.
+   * Validates two password strings, based on instantiated settings.
    *
    * @param {string} str
    * @memberof PasswordValidator
