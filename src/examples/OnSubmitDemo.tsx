@@ -1,5 +1,5 @@
-import PasswordInput from "./components/PasswordInput";
-import useValidation from "./lib/useValidation";
+import PasswordInput from "../components/PasswordInput";
+import useValidation from "../lib/useValidation";
 
 const OnSubmit = () => {
   const { validation, onSubmit } = useValidation({
@@ -28,9 +28,9 @@ const OnSubmit = () => {
           // ... sending data to the server goes here!
         }}
         id="form"
-        className="bg-white shadow-md rounded px-4 pt-6 pb-8 mb-4 md:flex md:flex-row"
+        className="bg-white md:shadow-md rounded px-3 -m-3 md:px-4 pt-6 pb-8 mb-4 md:flex md:flex-row"
       >
-        <div className="flex-none md:flex-1 p-6">
+        <div className="flex-none md:flex-1 p-3 md:p-6">
           <article id="password-instructions" className="block text-gray-700 text-md">
             <p className="mb-6">Please choose a new password. Passwords must:</p>
             <ul className="list-disc list-inside  from TailwindCSSpl-6 mb-8">
@@ -46,7 +46,7 @@ const OnSubmit = () => {
             <p>Additionally, the passwords in both inputs must match exactly.</p>
           </article>
         </div>
-        <div className="flex-none md:flex-1 p-6">
+        <div className="flex-none md:flex-1 p-3 md:p-6">
           <div className="mb-6">
             <PasswordInput
               inputClassName={inputClass}

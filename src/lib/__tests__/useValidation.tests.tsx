@@ -31,14 +31,14 @@ describe("useValidation", () => {
             id="fieldOne"
             onChange={onChange}
             value={formData.fieldOne}
-          ></input>
+          />
           <label htmlFor="fieldTwo">FieldTwo</label>
           <input
             name="fieldTwo"
             id="fieldTwo"
             onChange={onChange}
             value={formData.fieldTwo}
-          ></input>
+          />
           <div data-testid="is-valid">{validation.valid ? "valid" : "not valid"}</div>
           <div data-testid="messages">{validation.messages.join(", ")}</div>
           <button type="submit">submit</button>
@@ -74,9 +74,9 @@ describe("useValidation", () => {
           }}
         >
           <label htmlFor="fieldOne">FieldOne</label>
-          <input name="fieldOne" id="fieldOne"></input>
+          <input name="fieldOne" id="fieldOne" />
           <label htmlFor="fieldTwo">FieldTwo</label>
-          <input name="fieldTwo" id="fieldTwo"></input>
+          <input name="fieldTwo" id="fieldTwo" />
           <div data-testid="is-valid">{validation.valid ? "valid" : "not valid"}</div>
           <div data-testid="messages">{validation.messages.join(", ")}</div>
           <button type="submit">submit</button>
@@ -90,8 +90,6 @@ describe("useValidation", () => {
     });
 
     await fireEvent.click(screen.getByText(/submit/));
-
-    // await screen.debug();
 
     expect(screen.getByTestId("is-valid")).toHaveTextContent("not valid");
     expect(screen.getByTestId("messages")).toHaveTextContent(
@@ -114,20 +112,20 @@ describe("useValidation", () => {
             id="fieldOne"
             onChange={onChange}
             value={formData.fieldOne}
-          ></input>
+          />
           <label htmlFor="fieldTwo">FieldTwo</label>
           <input
             name="fieldTwo"
             id="fieldTwo"
             onChange={onChange}
             value={formData.fieldTwo}
-          ></input>
+          />
           <input
             name="fieldTwo"
             id="fieldTwo"
             onChange={onChange}
             value={formData.fieldTwo}
-          ></input>
+          />
           <div data-testid="is-valid">{validation.valid ? "valid" : "not valid"}</div>
           <div data-testid="messages">{validation.messages.join(", ")}</div>
           <button type="submit">submit</button>

@@ -1,7 +1,7 @@
 /// <reference types="vite-plugin-svgr/client" />
 import OnChangeDemo from "./OnChangeDemo";
 import OnSubmitDemo from './OnSubmitDemo';
-import Logo from "./assets/aweber-logo.svg?react";
+import Logo from "../assets/aweber-logo.svg?react";
 
 function App() {
   return (
